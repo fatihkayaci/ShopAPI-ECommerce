@@ -12,20 +12,24 @@ Modern e-commerce backend API built with Clean Architecture principles and ASP.N
 - **Clean Architecture Setup** - 4-layer architecture implemented
 - **Project Structure** - Domain, Application, Infrastructure, API layers
 - **Product Entity** - Core business entity with proper data types
-- **Project References** - Proper dependency flow between layers
-- **Git Repository** - Version control with .gitignore and documentation
+- **Repository Pattern** - Generic and Product-specific repositories
+- **Entity Framework** - Database context with SQL Server
+- **Database Integration** - Migrations and database creation
+- **API Controllers** - Complete CRUD operations for Products
+- **Dependency Injection** - Properly configured DI container
+- **Swagger Documentation** - Interactive API documentation
 
 ### 🚧 In Progress
-- **Repository Pattern** - Interface and implementation (next step)
-- **Entity Framework** - Database context setup
-- **API Controllers** - RESTful endpoints
-- **Database Integration** - SQL Server with EF Core
+- **Data Transfer Objects (DTOs)** - Request/Response models
+- **Input Validation** - Model validation and error handling
+- **Business Logic Layer** - Service pattern implementation
 
 ### 📋 Planned Features
 - **Authentication & Authorization** - JWT implementation
 - **Shopping Cart System** - Cart management
 - **Order Processing** - Complete order workflow
 - **Unit Testing** - Comprehensive test coverage
+- **Exception Handling** - Global error handling middleware
 
 ---
 
@@ -34,7 +38,7 @@ Modern e-commerce backend API built with Clean Architecture principles and ASP.N
 This project follows **Clean Architecture** pattern with clear separation of concerns:
 
 - **Domain Layer** - Business entities and core logic
-- **Application Layer** - Use cases and business rules  
+- **Application Layer** - Use cases, interfaces, and business rules  
 - **Infrastructure Layer** - Data access and external services
 - **API Layer** - HTTP endpoints and controllers
 
@@ -42,10 +46,10 @@ This project follows **Clean Architecture** pattern with clear separation of con
 
 - **Framework:** ASP.NET Core 6+
 - **Database:** Entity Framework Core with SQL Server
-- **Authentication:** JWT Bearer Token
+- **Authentication:** JWT Bearer Token (planned)
 - **Documentation:** Swagger/OpenAPI
-- **Testing:** xUnit
-- **Patterns:** Repository, Unit of Work, CQRS
+- **Testing:** xUnit (planned)
+- **Patterns:** Repository, Generic Repository, Dependency Injection
 
 ## 📁 Project Structure
 
@@ -53,35 +57,41 @@ This project follows **Clean Architecture** pattern with clear separation of con
 📁 ShopAPI-ECommerce/
 ├── 📁 ShopAPI.Domain/          # Business entities
 │   └── 📁 Entities/
-├── 📁 ShopAPI.Application/     # Business logic
+│       └── Product.cs
+├── 📁 ShopAPI.Application/     # Business logic & interfaces
 │   ├── 📁 Interfaces/
+│   │   ├── IGenericRepository.cs
+│   │   └── IProductRepository.cs
 │   └── 📁 Services/
 ├── 📁 ShopAPI.Infrastructure/  # Data access
 │   ├── 📁 Data/
-│   └── 📁 Repositories/
+│   │   └── AppDbContext.cs
+│   ├── 📁 Repositories/
+│   │   ├── GenericRepository.cs
+│   │   └── ProductRepository.cs
+│   └── 📁 Migrations/
 └── 📁 ShopAPI.API/            # HTTP layer
-    └── 📁 Controllers/
+    ├── 📁 Controllers/
+    │   └── ProductController.cs
+    ├── Program.cs
+    └── appsettings.json
 ```
 
-## 🎯 Features
+## 🎯 API Endpoints
 
-### Core Features
-- ✅ Product Management (CRUD)
-- ✅ Category Management
-- ✅ User Authentication & Authorization
-- ✅ Shopping Cart Operations
-- ✅ Order Processing
-- ✅ Stock Management
+### Products
+- `GET /api/product` - Get all products
+- `GET /api/product/{id}` - Get product by ID
+- `POST /api/product` - Create new product
+- `PUT /api/product/{id}` - Update product
+- `DELETE /api/product/{id}` - Delete product
+- `GET /api/product/category/{category}` - Get products by category
 
-### Technical Features
-- ✅ Clean Architecture Implementation
-- ✅ Repository Pattern
-- ✅ Generic Repository
-- ✅ Unit of Work Pattern
-- ✅ JWT Authentication
-- ✅ Input Validation
-- ✅ Error Handling
-- ✅ API Documentation (Swagger)
+### Planned Endpoints
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - User login
+- `GET /api/cart` - Get cart items
+- `POST /api/cart/add` - Add item to cart
 
 ## 🛠️ Getting Started
 
@@ -90,7 +100,7 @@ This project follows **Clean Architecture** pattern with clear separation of con
 - SQL Server (LocalDB or Express) 
 - Visual Studio 2022 or VS Code
 
-### Current Setup
+### Setup Instructions
 
 1. **Clone the repository**
    ```bash
@@ -103,26 +113,35 @@ This project follows **Clean Architecture** pattern with clear separation of con
    dotnet restore
    ```
 
-3. **Build the solution**
+3. **Update connection string**
+   Edit `ShopAPI.API/appsettings.json`:
+   ```json
+   {
+     "ConnectionStrings": {
+       "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=ShopAPIDb;Trusted_Connection=true;MultipleActiveResultSets=true"
+     }
+   }
+   ```
+
+4. **Create and update database**
+   ```bash
+   dotnet ef database update --project ShopAPI.Infrastructure --startup-project ShopAPI.API
+   ```
+
+5. **Build the solution**
    ```bash
    dotnet build
    ```
 
-4. **Run the API project** (Basic setup - no database yet)
+6. **Run the API**
    ```bash
    dotnet run --project ShopAPI.API
    ```
 
-5. **Access Swagger UI** (when implemented)
+7. **Access Swagger UI**
    ```
    https://localhost:5001/swagger
    ```
-
-### Next Steps in Development
-- Implement Repository Pattern
-- Add Entity Framework DbContext  
-- Create API Controllers
-- Add database migrations
 
 ## 📊 Current Development Status
 
@@ -132,40 +151,33 @@ This project follows **Clean Architecture** pattern with clear separation of con
 | 📁 **Project Structure** | ✅ Complete | Domain, Application, Infrastructure, API |
 | 🎯 **Product Entity** | ✅ Complete | Core business entity implemented |
 | 🔗 **Project References** | ✅ Complete | Proper dependency injection setup |
-| 📝 **Documentation** | ✅ Complete | README and LICENSE files |
-| 🗃️ **Repository Pattern** | 🚧 Next | Interface and implementation |
-| 💾 **Database Context** | 📋 Planned | Entity Framework Core setup |
-| 🌐 **API Endpoints** | 📋 Planned | RESTful controllers |
+| 🗃️ **Repository Pattern** | ✅ Complete | Generic and Product repositories |
+| 💾 **Database Context** | ✅ Complete | Entity Framework Core with SQL Server |
+| 🌐 **API Endpoints** | ✅ Complete | RESTful Product CRUD operations |
+| 📋 **Database Migration** | ✅ Complete | Initial database schema created |
+| 🔧 **Dependency Injection** | ✅ Complete | Services properly registered |
+| 📖 **Swagger Documentation** | ✅ Complete | Interactive API documentation |
+| 📝 **DTOs** | 🚧 Next | Data Transfer Objects |
+| ✅ **Validation** | 📋 Planned | Input validation and error handling |
 | 🔐 **Authentication** | 📋 Planned | JWT implementation |
 
----
+## 🧪 Testing the API
 
-### Products
-- `GET /api/products` - Get all products
-- `GET /api/products/{id}` - Get product by ID
-- `POST /api/products` - Create new product
-- `PUT /api/products/{id}` - Update product
-- `DELETE /api/products/{id}` - Delete product
+### Using Swagger UI
+1. Run the application: `dotnet run --project ShopAPI.API`
+2. Navigate to: `https://localhost:5001/swagger`
+3. Test the endpoints directly in the browser
 
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - User login
-- `POST /api/auth/refresh` - Refresh token
-
-### Shopping Cart
-- `GET /api/cart` - Get cart items
-- `POST /api/cart/add` - Add item to cart
-- `PUT /api/cart/update` - Update cart item
-- `DELETE /api/cart/remove` - Remove from cart
-
-## 🧪 Testing
-
-```bash
-# Run unit tests
-dotnet test
-
-# Run with coverage
-dotnet test --collect:"XPlat Code Coverage"
+### Sample Product JSON
+```json
+{
+  "productName": "iPhone 15",
+  "description": "Latest Apple smartphone",
+  "price": 999.99,
+  "stock": 50,
+  "category": "Electronics",
+  "image": "iphone15.jpg"
+}
 ```
 
 ## 🔧 Development
@@ -180,34 +192,49 @@ dotnet build
 dotnet run --project ShopAPI.API
 ```
 
-### Package Installation
+### Database Commands
 ```bash
-# Entity Framework
-dotnet add ShopAPI.Infrastructure package Microsoft.EntityFrameworkCore.SqlServer
+# Add new migration
+dotnet ef migrations add MigrationName --project ShopAPI.Infrastructure --startup-project ShopAPI.API
 
-# AutoMapper
-dotnet add ShopAPI.Application package AutoMapper.Extensions.Microsoft.DependencyInjection
+# Update database
+dotnet ef database update --project ShopAPI.Infrastructure --startup-project ShopAPI.API
+
+# Remove last migration
+dotnet ef migrations remove --project ShopAPI.Infrastructure --startup-project ShopAPI.API
 ```
 
 ## 🌟 Design Patterns Used
 
 - **Repository Pattern** - Data access abstraction
-- **Unit of Work** - Transaction management
-- **Generic Repository** - Code reusability
-- **Dependency Injection** - Loose coupling
-- **CQRS** - Command Query separation (planned)
+- **Generic Repository** - Code reusability across entities
+- **Dependency Injection** - Loose coupling and testability
+- **Clean Architecture** - Separation of concerns
+- **Code First** - Database schema from C# entities
+
+## 🎯 Next Development Steps
+
+1. **DTOs Implementation** - Request/Response models
+2. **Input Validation** - Model validation attributes
+3. **Service Layer** - Business logic separation
+4. **Exception Handling** - Global error handling
+5. **Authentication** - JWT implementation
+6. **Unit Testing** - Repository and service tests
+7. **Integration Testing** - API endpoint tests
 
 ## 🎯 Future Enhancements
 
+- [ ] User Management System
+- [ ] Shopping Cart Implementation
+- [ ] Order Processing System
+- [ ] Product Categories Management
+- [ ] Image Upload Functionality
+- [ ] Search and Filtering
+- [ ] Pagination
 - [ ] CQRS with MediatR
-- [ ] Event Sourcing
 - [ ] Redis Caching
-- [ ] Background Jobs (Hangfire)
-- [ ] API Rate Limiting
 - [ ] Docker Support
 - [ ] CI/CD Pipeline
-- [ ] Integration Tests
-- [ ] Performance Monitoring
 
 ## 📝 Contributing
 

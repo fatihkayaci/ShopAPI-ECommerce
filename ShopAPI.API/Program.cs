@@ -1,13 +1,28 @@
+using Microsoft.EntityFrameworkCore;
+using ShopAPI.Infrastructure.Data;
+using ShopAPI.Application.Interfaces;
+using ShopAPI.Infrastructure.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Services
+// Add services to the container.
 builder.Services.AddControllers();
+
+// ✅ Database Context
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// ✅ Repository Registration  
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Pipeline
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -15,6 +30,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();

@@ -140,7 +140,7 @@ This project follows **Clean Architecture** pattern with clear separation of con
 
 7. **Access Swagger UI**
    ```
-   https://localhost:5001/swagger
+   https://localhost:5158/swagger
    ```
 
 ## 📊 Current Development Status
@@ -157,7 +157,7 @@ This project follows **Clean Architecture** pattern with clear separation of con
 | 📋 **Database Migration** | ✅ Complete | Initial database schema created |
 | 🔧 **Dependency Injection** | ✅ Complete | Services properly registered |
 | 📖 **Swagger Documentation** | ✅ Complete | Interactive API documentation |
-| 📝 **DTOs** | 🚧 Next | Data Transfer Objects |
+| 📝 **DTOs** | ✅ 🚧 Next | Data Transfer Objects |
 | ✅ **Validation** | 📋 Planned | Input validation and error handling |
 | 🔐 **Authentication** | 📋 Planned | JWT implementation |
 

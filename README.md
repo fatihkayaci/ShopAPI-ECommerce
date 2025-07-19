@@ -18,18 +18,22 @@ Modern e-commerce backend API built with Clean Architecture principles and ASP.N
 - **API Controllers** - Complete CRUD operations for Products
 - **Dependency Injection** - Properly configured DI container
 - **Swagger Documentation** - Interactive API documentation
+- **Data Transfer Objects (DTOs)** - Request/Response models with validation
+- **AutoMapper Integration** - Automatic object mapping
+- **Service Layer** - Business logic separation with ProductService
+- **Input Validation** - Comprehensive model validation with error handling
+- **Business Rules** - Duplicate name checking, category defaults, stock validation
 
-### 🚧 In Progress
-- **Data Transfer Objects (DTOs)** - Request/Response models
-- **Input Validation** - Model validation and error handling
-- **Business Logic Layer** - Service pattern implementation
+### 🚧 Next Steps
+- **Exception Handling** - Global error handling middleware
+- **Categories Entity** - Product-Category relationship implementation
+- **Users & Authentication** - JWT implementation
 
-### 📋 Planned Features
-- **Authentication & Authorization** - JWT implementation
+### 📋 Future Features
 - **Shopping Cart System** - Cart management
 - **Order Processing** - Complete order workflow
 - **Unit Testing** - Comprehensive test coverage
-- **Exception Handling** - Global error handling middleware
+- **Performance Optimization** - Caching and optimization
 
 ---
 
@@ -38,7 +42,7 @@ Modern e-commerce backend API built with Clean Architecture principles and ASP.N
 This project follows **Clean Architecture** pattern with clear separation of concerns:
 
 - **Domain Layer** - Business entities and core logic
-- **Application Layer** - Use cases, interfaces, and business rules  
+- **Application Layer** - Use cases, interfaces, DTOs, business rules  
 - **Infrastructure Layer** - Data access and external services
 - **API Layer** - HTTP endpoints and controllers
 
@@ -46,10 +50,10 @@ This project follows **Clean Architecture** pattern with clear separation of con
 
 - **Framework:** ASP.NET Core 6+
 - **Database:** Entity Framework Core with SQL Server
-- **Authentication:** JWT Bearer Token (planned)
+- **Object Mapping:** AutoMapper
+- **Validation:** Data Annotations
 - **Documentation:** Swagger/OpenAPI
-- **Testing:** xUnit (planned)
-- **Patterns:** Repository, Generic Repository, Dependency Injection
+- **Patterns:** Repository, Generic Repository, Service Layer, Dependency Injection
 
 ## 📁 Project Structure
 
@@ -61,8 +65,16 @@ This project follows **Clean Architecture** pattern with clear separation of con
 ├── 📁 ShopAPI.Application/     # Business logic & interfaces
 │   ├── 📁 Interfaces/
 │   │   ├── IGenericRepository.cs
-│   │   └── IProductRepository.cs
-│   └── 📁 Services/
+│   │   ├── IProductRepository.cs
+│   │   └── IProductService.cs
+│   ├── 📁 DTOs/
+│   │   ├── CreateProductDto.cs
+│   │   ├── UpdateProductDto.cs
+│   │   └── ProductResponseDto.cs
+│   ├── 📁 Services/
+│   │   └── ProductService.cs
+│   └── 📁 Profiles/
+│       └── ProductProfile.cs
 ├── 📁 ShopAPI.Infrastructure/  # Data access
 │   ├── 📁 Data/
 │   │   └── AppDbContext.cs
@@ -86,12 +98,14 @@ This project follows **Clean Architecture** pattern with clear separation of con
 - `PUT /api/product/{id}` - Update product
 - `DELETE /api/product/{id}` - Delete product
 - `GET /api/product/category/{category}` - Get products by category
+- `GET /api/product/price-range?minPrice=100&maxPrice=1000` - Get products by price range
+- `GET /api/product/search?searchTerm=iPhone` - Search products
 
 ### Planned Endpoints
 - `POST /api/auth/register` - Register new user
 - `POST /api/auth/login` - User login
+- `GET /api/categories` - Get all categories
 - `GET /api/cart` - Get cart items
-- `POST /api/cart/add` - Add item to cart
 
 ## 🛠️ Getting Started
 
@@ -140,7 +154,7 @@ This project follows **Clean Architecture** pattern with clear separation of con
 
 7. **Access Swagger UI**
    ```
-   https://localhost:5158/swagger
+   https://localhost:5001/swagger
    ```
 
 ## 📊 Current Development Status
@@ -157,8 +171,12 @@ This project follows **Clean Architecture** pattern with clear separation of con
 | 📋 **Database Migration** | ✅ Complete | Initial database schema created |
 | 🔧 **Dependency Injection** | ✅ Complete | Services properly registered |
 | 📖 **Swagger Documentation** | ✅ Complete | Interactive API documentation |
-| 📝 **DTOs** | ✅ 🚧 Next | Data Transfer Objects |
-| ✅ **Validation** | 📋 Planned | Input validation and error handling |
+| 📝 **DTOs** | ✅ Complete | Data Transfer Objects with validation |
+| 🗺️ **AutoMapper** | ✅ Complete | Automatic object mapping |
+| 🧠 **Service Layer** | ✅ Complete | Business logic separation |
+| ✅ **Input Validation** | ✅ Complete | Model validation and error handling |
+| 🛡️ **Exception Handling** | 🚧 Next | Global error handling middleware |
+| 📂 **Categories** | 📋 Planned | Product-Category relationship |
 | 🔐 **Authentication** | 📋 Planned | JWT implementation |
 
 ## 🧪 Testing the API
@@ -178,6 +196,21 @@ This project follows **Clean Architecture** pattern with clear separation of con
   "category": "Electronics",
   "image": "iphone15.jpg"
 }
+```
+
+### Sample API Calls
+```bash
+# Get all products
+GET /api/product
+
+# Search products
+GET /api/product/search?searchTerm=iPhone
+
+# Filter by price range
+GET /api/product/price-range?minPrice=100&maxPrice=1000
+
+# Get products by category
+GET /api/product/category/Electronics
 ```
 
 ## 🔧 Development
@@ -208,17 +241,19 @@ dotnet ef migrations remove --project ShopAPI.Infrastructure --startup-project S
 
 - **Repository Pattern** - Data access abstraction
 - **Generic Repository** - Code reusability across entities
+- **Service Layer Pattern** - Business logic separation
+- **DTO Pattern** - Data transfer and validation
 - **Dependency Injection** - Loose coupling and testability
 - **Clean Architecture** - Separation of concerns
 - **Code First** - Database schema from C# entities
 
 ## 🎯 Next Development Steps
 
-1. **DTOs Implementation** - Request/Response models
-2. **Input Validation** - Model validation attributes
-3. **Service Layer** - Business logic separation
-4. **Exception Handling** - Global error handling
-5. **Authentication** - JWT implementation
+1. **Exception Handling** - Global error handling middleware
+2. **Categories Management** - Product-Category relationships
+3. **User Management** - User registration and authentication
+4. **Shopping Cart** - Cart functionality
+5. **Order Processing** - Order management system
 6. **Unit Testing** - Repository and service tests
 7. **Integration Testing** - API endpoint tests
 
@@ -229,12 +264,13 @@ dotnet ef migrations remove --project ShopAPI.Infrastructure --startup-project S
 - [ ] Order Processing System
 - [ ] Product Categories Management
 - [ ] Image Upload Functionality
-- [ ] Search and Filtering
-- [ ] Pagination
+- [ ] Advanced Search and Filtering
+- [ ] Pagination Support
 - [ ] CQRS with MediatR
 - [ ] Redis Caching
 - [ ] Docker Support
 - [ ] CI/CD Pipeline
+- [ ] Performance Monitoring
 
 ## 📝 Contributing
 
@@ -252,7 +288,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Fatih Kayacı**
 - GitHub: [@fatihkayaci](https://github.com/fatihkayaci)
-- LinkedIn: [Fatih Kayacı](https://linkedin.com/in/fatihkayaci)
+- LinkedIn: [Fatih Kayacı](https://linkedin.com/in/fatihkayaci/)
 
 ## 🙏 Acknowledgments
 

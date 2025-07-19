@@ -10,7 +10,7 @@ namespace ShopAPI.Infrastructure.Repositories
 {
     public class ProductRepository : GenericRepository<Product>, IProductRepository
     {
-        public ProductRepository(AppDbContext context) : base(context) // ← DbContext yerine AppDbContext
+        public ProductRepository(AppDbContext context) : base(context)
         {
         }
 
